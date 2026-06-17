@@ -1,0 +1,12 @@
+{
+  "name": "ai-zhaman-detector-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "desktop:dev": "cd src-tauri && cargo tauri dev",
+    "desktop:build": "scripts/build-release.sh",
+    "desktop:check": "cd src-tauri && cargo check",
+    "test": "node tests/detector.test.js && node tests/import-utils.test.js && node tests/privacy-utils.test.js && node tests/llm-api.test.js && node tests/eval-cases.test.js && node tests/desktop-smoke.test.js"
+  }
+}
