@@ -25,7 +25,7 @@ assert.equal(config.build.frontendDist, "../src");
 assert.equal(config.app.withGlobalTauri, true);
 assert.equal(config.app.security.csp, null);
 assert.equal(config.bundle.active, true);
-assert.deepEqual(config.bundle.targets, ["app", "dmg"]);
+assert.equal(config.bundle.targets, "all");
 assert.ok(config.bundle.icon.includes("icons/icon.icns"));
 assert.ok(config.bundle.icon.includes("icons/icon.ico"));
 assert.ok(cargoToml.includes("tauri = { version = \"2\""));
