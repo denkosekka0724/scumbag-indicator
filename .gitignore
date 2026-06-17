@@ -1,0 +1,16 @@
+.DS_Store
+*.log
+*.tmp
+.env
+.env.*
+
+node_modules/
+dist/
+build/
+
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/target-*/
+apps/desktop/src-tauri/target_*/
+
+*.dmg
+*.app
