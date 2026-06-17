@@ -47,4 +47,4 @@ jobs:
             - 默认离线运行；只有用户手动配置并发起大模型复核时才会联网。
           releaseDraft: false
           prerelease: true
-          args: "--bundles nsis,msi"
+          args: "--bundles nsis"
