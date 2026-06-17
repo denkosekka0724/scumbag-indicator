@@ -1,0 +1,50 @@
+name: Windows release build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to build and upload assets to"
+        required: true
+        default: "v0.1.0-beta.1"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows installer
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build Windows bundles
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: apps/desktop
+          tagName: ${{ inputs.release_tag }}
+          releaseName: "AI渣男识别器 ${{ inputs.release_tag }}"
+          releaseBody: |
+            这是纯 Beta 测试阶段的玩具版本。
+
+            - 分析结果不带有任何参考价值。
+            - 不应作为关系判断、心理判断、法律判断或现实行动依据。
+            - 不做心理疾病诊断、法律结论或治疗建议。
+            - 默认离线运行；只有用户手动配置并发起大模型复核时才会联网。
+          releaseDraft: false
+          prerelease: true
+          args: "--bundles nsis,msi"
