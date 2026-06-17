@@ -780,7 +780,7 @@
       timeline_analysis: timelineAnalysis,
       advice: null,
       non_diagnostic_disclaimer:
-        "这是话术和关系风险识别，不是人格障碍诊断、法律结论或心理治疗建议。"
+        "当前版本是纯 Beta 测试阶段的玩具项目，分析结果不带有任何参考价值；它不是人格障碍诊断、法律结论、心理治疗建议，也不应作为现实行动依据。"
     };
     result.advice = makeAdvice(result);
     return result;
