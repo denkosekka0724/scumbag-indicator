@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI渣男识别器 Desktop</title>
+    <link rel="icon" href="./favicon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="分析工作台">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">本地桌面版</p>
+            <h1>AI渣男识别器</h1>
+          </div>
+          <div class="topbar-actions">
+            <button id="llmTopBtn" class="ghost-btn" type="button">
+              <span class="icon">◇</span>
+              <span>大模型 API</span>
+            </button>
+            <div class="status-strip" aria-label="运行状态">
+              <span class="status-dot"></span>
+              <span id="runtimeStatus">Local rules · API optional</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="main-grid">
+          <section class="input-panel" aria-label="输入区">
+            <div class="privacy-note" role="note">
+              <strong>默认离线。</strong>
+              当前版本只分析你主动粘贴或导入的内容，不读取微信/QQ底层数据库；只有你在“大模型 API”里手动发起模型复核时才会联网。
+              本项目是纯娱乐项目，输出仅供自我观察和关系复盘参考。
+            </div>
+
+            <div class="import-card" aria-label="本地导入">
+              <div class="import-head">
+                <div>
+                  <p class="mini-label">本地导入</p>
+                  <strong>微信 / QQ 导出文件</strong>
+                </div>
+                <span class="privacy-badge">不上传</span>
+              </div>
+              <label class="file-drop" for="fileInput" id="dropZone">
+                <span class="file-icon">＋</span>
+                <span>
+                  选择或拖入 `.txt` `.json` `.html` `.mht`
+                  <small>可导入聊天导出文件，也可以继续手动粘贴</small>
+                </span>
+              </label>
+              <input id="fileInput" type="file" accept=".txt,.json,.html,.htm,.mht,.mhtml,.csv,.log" />
+              <div class="import-tools">
+                <label>
+                  分析对象
+                  <input id="targetKeyword" type="text" placeholder="昵称 / 备注 / QQ号 / 微信名" />
+                </label>
+              </div>
+              <div class="button-row compact">
+                <button id="applyFilterBtn" class="ghost-btn" type="button">
+                  <span class="icon">⌁</span>
+                  <span>应用对象</span>
+                </button>
+              </div>
+              <p id="importStatus" class="import-status">尚未选择文件。</p>
+            </div>
+
+            <label class="textarea-label" for="inputText">聊天记录 / 恋爱经历</label>
+            <textarea
+              id="inputText"
+              spellcheck="false"
+              placeholder="例如：他说“她只是普通朋友，你能不能大度一点？等我工作稳定了肯定娶你，现在别老逼我。”"
+            ></textarea>
+
+            <details class="context-card">
+              <summary>
+                <span>补充背景</span>
+                <small>可选，不直接加分</small>
+              </summary>
+              <p>这些信息只用于解释和置信度提示；主要判断仍来自原文证据、时间线和安全信号。</p>
+              <div class="field-row">
+                <label for="relationshipDuration">关系时长</label>
+                <select id="relationshipDuration">
+                  <option value="">未填写</option>
+                  <option value="early">0-3个月</option>
+                  <option value="cooling">3-6个月</option>
+                  <option value="testing">6-12个月</option>
+                  <option value="long">12个月以上</option>
+                </select>
+              </div>
+
+              <div class="field-row two">
+                <label class="check-row">
+                  <input id="repeatPattern" type="checkbox" />
+                  <span>反复发生</span>
+                </label>
+                <label class="check-row">
+                  <input id="boundaryIgnored" type="checkbox" />
+                  <span>说过不舒服后仍继续</span>
+                </label>
+              </div>
+            </details>
+
+            <div class="button-row">
+              <button id="analyzeBtn" class="primary-btn" type="button">
+                <span class="icon">⌕</span>
+                <span>分析</span>
+              </button>
+              <button id="sampleBtn" class="ghost-btn" type="button">
+                <span class="icon">▣</span>
+                <span>样例</span>
+              </button>
+              <button id="clearBtn" class="ghost-btn danger-lite" type="button">
+                <span class="icon">×</span>
+                <span>一键清空</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="result-panel" aria-label="结果区">
+            <div class="score-band">
+              <div class="score-gauge" aria-label="渣男指数">
+                <svg viewBox="0 0 120 120" role="img" aria-hidden="true">
+                  <circle class="track" cx="60" cy="60" r="48"></circle>
+                  <circle id="scoreCircle" class="progress" cx="60" cy="60" r="48"></circle>
+                </svg>
+                <div class="score-text">
+                  <strong id="scoreValue">0</strong>
+                  <span>/100</span>
+                </div>
+              </div>
+              <div class="score-copy">
+                <p id="riskLevel" class="risk-pill">等待分析</p>
+                <h2 id="summaryText">粘贴一段文本，先看证据再下判断。</h2>
+                <p id="confidenceText">置信度：-</p>
+                <div class="export-controls" aria-label="导出安全设置">
+                  <label>
+                    <span>导出模式</span>
+                    <select id="exportMode">
+                      <option value="redacted" selected>脱敏报告</option>
+                      <option value="summary">仅结论摘要</option>
+                      <option value="raw">原文报告</option>
+                    </select>
+                  </label>
+                  <label class="check-row export-check">
+                    <input id="maskNames" type="checkbox" checked />
+                    <span>替换参与者姓名</span>
+                  </label>
+                </div>
+                <div class="button-row compact export-actions" aria-label="报告导出">
+                  <button id="exportMarkdownBtn" class="ghost-btn" type="button">
+                    <span class="icon">↧</span>
+                    <span>导出 Markdown</span>
+                  </button>
+                  <button id="exportJsonBtn" class="ghost-btn" type="button">
+                    <span class="icon">{}</span>
+                    <span>导出 JSON</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="safetyAlert" class="safety-alert hidden" role="alert"></div>
+            <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+            <div class="tabs" role="tablist" aria-label="结果视图">
+              <button class="tab active" data-tab="categories" type="button">分类</button>
+              <button class="tab" data-tab="evidence" type="button">证据</button>
+              <button class="tab" data-tab="timeline" type="button">时间线</button>
+            </div>
+
+            <section id="categoriesView" class="tab-view active" aria-label="分类分数">
+              <div id="categoryGrid" class="category-grid"></div>
+            </section>
+
+            <section id="evidenceView" class="tab-view" aria-label="证据列表">
+              <div id="evidenceList" class="evidence-list"></div>
+            </section>
+
+            <section id="timelineView" class="tab-view" aria-label="时间线分析">
+              <div id="timelineList" class="timeline-list"></div>
+            </section>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="llmApiDialog" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="llmDialogTitle">
+      <section class="modal-panel">
+        <header class="modal-head">
+          <div>
+            <p class="mini-label">可选联网</p>
+            <h2 id="llmDialogTitle">大模型 API 接入</h2>
+          </div>
+          <button id="llmCloseBtn" class="ghost-btn icon-only" type="button" aria-label="关闭">×</button>
+        </header>
+
+        <div class="llm-form">
+          <label class="llm-provider-field">
+            接口预设
+            <select id="llmProviderPreset">
+              <option value="openai">OpenAI</option>
+              <option value="deepseek">DeepSeek</option>
+              <option value="kimi">Kimi / Moonshot</option>
+              <option value="dashscope">通义千问 DashScope</option>
+              <option value="siliconflow">硅基流动 SiliconFlow</option>
+              <option value="openrouter">OpenRouter</option>
+              <option value="custom">自定义接口</option>
+            </select>
+          </label>
+          <label class="llm-base-field">
+            接口地址
+            <input id="llmBaseUrl" type="url" placeholder="https://api.example.com/v1" autocomplete="off" />
+          </label>
+          <label class="llm-model-preset-field">
+            模型预设
+            <select id="llmModelPreset"></select>
+          </label>
+          <label id="llmCustomModelField" class="llm-custom-field hidden">
+            自定义模型
+            <input id="llmModel" type="text" placeholder="例如 gpt-4.1-mini / deepseek-chat" autocomplete="off" />
+          </label>
+          <label class="llm-key-field">
+            API Key
+            <input id="llmApiKey" type="password" placeholder="只保存在当前窗口内存" autocomplete="off" />
+          </label>
+          <label class="check-row llm-check-row">
+            <input id="llmUseRedacted" type="checkbox" checked />
+            <span>发送脱敏报告给模型</span>
+          </label>
+        </div>
+
+        <div class="llm-note">
+          <strong>默认不联网。</strong>
+          点击“模型复核”后才会请求兼容 OpenAI Chat Completions 的接口。建议保持脱敏开启；如果关闭脱敏，原文报告可能包含姓名、账号或地址。
+        </div>
+
+        <div class="button-row">
+          <button id="llmSaveBtn" class="primary-btn" type="button">
+            <span class="icon">✓</span>
+            <span>保存当前会话配置</span>
+          </button>
+          <button id="llmReviewBtn" class="ghost-btn" type="button">
+            <span class="icon">⌕</span>
+            <span>模型复核</span>
+          </button>
+        </div>
+        <p id="llmStatus" class="import-status">尚未配置 API。</p>
+        <pre id="llmOutput" class="llm-output">模型复核结果会显示在这里。</pre>
+      </section>
+    </div>
+
+    <script src="./detector.js"></script>
+    <script src="./import-utils.js"></script>
+    <script src="./privacy-utils.js"></script>
+    <script src="./llm-api.js"></script>
+    <script src="./desktop-utils.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
