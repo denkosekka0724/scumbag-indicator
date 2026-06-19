@@ -18,7 +18,7 @@ const rustLib = fs.readFileSync(path.join(root, "src-tauri", "src", "lib.rs"), "
 assert.equal(desktopUtils.reportTimestamp(new Date("2026-06-12T21:08:00")), "20260612-2108");
 assert.equal(desktopUtils.makeReportFileName("md", new Date("2026-06-12T21:08:00")), "zhaman-report-20260612-2108.md");
 assert.ok(desktopUtils.makeJsonReport({ score: 80 }).includes('"score": 80'));
-assert.ok(privacyUtils.redactText("手机号 13812345678").text.includes("[手机号1]"));
+assert.ok(privacyUtils.redactText("手机号 13800000000").text.includes("[手机号1]"));
 assert.equal(llmApi.makeChatCompletionsUrl("https://api.example.com/v1"), "https://api.example.com/v1/chat/completions");
 
 assert.equal(config.build.frontendDist, "../src");
