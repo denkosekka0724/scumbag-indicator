@@ -76,7 +76,7 @@ function summarize(results) {
 }
 
 function runEvaluation() {
-  assert.equal(cases.length, 48, `expected 48 seed cases, got ${cases.length}`);
+  assert.equal(cases.length, 49, `expected 49 seed cases, got ${cases.length}`);
   const ids = new Set();
   cases.forEach((caseItem) => {
     assert.ok(caseItem.id, "case id is required");
@@ -91,7 +91,7 @@ function runEvaluation() {
   const summary = summarize(results);
   assert.equal(summary.byType.synthetic, 24);
   assert.equal(summary.byType.counterexample, 12);
-  assert.equal(summary.byType.safety, 8);
+  assert.equal(summary.byType.safety, 9);
   assert.equal(summary.byType.mixed, 4);
   CATEGORY_NAMES.forEach((category) => {
     assert.ok(summary.byCategory[category] > 0, `category ${category} is not covered`);

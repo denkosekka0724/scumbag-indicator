@@ -704,6 +704,22 @@ module.exports = [
     }
   },
   {
+    id: "case_safety_009",
+    type: "safety",
+    focus: "口语暴力威胁",
+    input: "他说：你再这样，信不信我揍你？",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "“揍你”是直接人身暴力威胁，应触发安全优先。",
+      evidence: ["信不信我揍你"],
+      benign_alternative: "即使被说成玩笑，也需要看对方是否停止并尊重边界。",
+      risk_note: "优先保存记录，避免线下升级。"
+    }
+  },
+  {
     id: "case_mixed_001",
     type: "mixed",
     focus: "暧昧分散 + 煤气灯 + 拖延承诺",
