@@ -40,7 +40,8 @@ created: 2026-06-12
 
 - `literature-map.md`：8 类话术对应的论文/权威资料地图，含扩展来源补充。
 - `deep-analysis-methods.md`：深度分析流程、风险评估、量表映射和反事实检查。
-- `casebook.md`：公开案例与案例型材料，按本项目 8 类话术映射。
+- `casebook.md`：20 个公开案例/案例型材料卡片，按本项目 8 类话术、安全覆盖和反误判规则映射。
+- `case-expansion-research.md`：公开案例库扩展清单、第二批扩展记录、来源分层、入库标准和用户自愿案例边界。
 - `detector-taxonomy-and-scoring.md`：分类定义、证据标准、0-100 分评分。
 - `weight-rationale.md`：权重来源、三轴归一化方法和局限性。
 - `prompt-output-contract.md`：可直接交给 LLM 的系统提示词与 JSON 输出契约。
