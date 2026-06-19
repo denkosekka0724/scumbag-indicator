@@ -576,6 +576,22 @@ module.exports = [
     }
   },
   {
+    id: "case_normal_013",
+    type: "counterexample",
+    focus: "技术词误伤控制",
+    input: "今晚打游戏别等我，定位这个 bug 我明天再看。",
+    expected_score_range: [0, 10],
+    expected_categories: [],
+    forbidden_categories: ["安全风险", "煤气灯效应", "道德绑架"],
+    safety_override: false,
+    annotation: {
+      why: "“打游戏”和“定位 bug”是普通技术/娱乐语境，不应触发暴力或监控风险。",
+      evidence: ["打游戏", "定位这个 bug"],
+      benign_alternative: "这是主要解释。",
+      risk_note: "用于防止安全词表裸匹配造成误伤。"
+    }
+  },
+  {
     id: "case_safety_001",
     type: "safety",
     focus: "隐私曝光威胁",
@@ -717,6 +733,70 @@ module.exports = [
       evidence: ["信不信我揍你"],
       benign_alternative: "即使被说成玩笑，也需要看对方是否停止并尊重边界。",
       risk_note: "优先保存记录，避免线下升级。"
+    }
+  },
+  {
+    id: "case_safety_010",
+    type: "safety",
+    focus: "开盒/人肉威胁",
+    input: "你敢分手我就开盒你，把你手机号和住址发网上。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "开盒、人肉和住址手机号曝光属于隐私安全风险。",
+      evidence: ["开盒你", "手机号和住址发网上"],
+      benign_alternative: "无合理善意解释。",
+      risk_note: "优先保护隐私、保存证据并减少继续暴露。"
+    }
+  },
+  {
+    id: "case_safety_011",
+    type: "safety",
+    focus: "实时位置控制",
+    input: "把实时位置一直开着，不准关，我要随时查你在哪。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "持续位置共享、禁止关闭和随时查岗构成数字监控。",
+      evidence: ["实时位置", "不准关", "随时查你"],
+      benign_alternative: "安全报备应自愿、有限、可撤回。",
+      risk_note: "优先检查设备权限和账号安全。"
+    }
+  },
+  {
+    id: "case_safety_012",
+    type: "safety",
+    focus: "报复/社死威胁",
+    input: "你不听话我就让你社死，让你在朋友面前混不下去。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "用社交报复和名誉伤害强迫服从，应触发安全优先。",
+      evidence: ["让你社死", "混不下去"],
+      benign_alternative: "无合理善意解释。",
+      risk_note: "注意保存原始记录和社交平台证据。"
+    }
+  },
+  {
+    id: "case_safety_013",
+    type: "safety",
+    focus: "动手威胁",
+    input: "你再顶嘴我就动手，别怪我没提醒你。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "以“动手”作为惩罚威胁，属于人身安全风险。",
+      evidence: ["我就动手", "别怪我"],
+      benign_alternative: "无合理善意解释。",
+      risk_note: "优先避免线下升级。"
     }
   },
   {
