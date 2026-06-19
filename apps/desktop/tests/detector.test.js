@@ -36,6 +36,18 @@ assert.equal(verbalViolence.safety_override, true);
 assert.ok(verbalViolence.score >= 80);
 assert.ok(verbalViolence.safety_alerts.some((item) => item.label === "暴力威胁"));
 
+const doxxingThreat = detector.analyze("你敢分手我就开盒你，把你手机号和住址发网上。");
+assert.equal(doxxingThreat.safety_override, true);
+assert.ok(doxxingThreat.safety_alerts.some((item) => item.label === "隐私曝光威胁"));
+
+const locationThreat = detector.analyze("把实时位置一直开着，不准关，我要随时查你在哪。");
+assert.equal(locationThreat.safety_override, true);
+assert.ok(locationThreat.safety_alerts.some((item) => item.label === "监控/限制自由"));
+
+const normalTechText = detector.analyze("今晚打游戏别等我，定位这个 bug 我明天再看。");
+assert.equal(normalTechText.safety_override, false);
+assert.ok(normalTechText.score <= 10);
+
 const report = detector.generateMarkdownReport(result);
 assert.ok(report.includes("渣男指数"));
 assert.ok(report.includes("命中的话术"));
