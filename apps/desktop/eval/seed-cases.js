@@ -512,6 +512,70 @@ module.exports = [
     }
   },
   {
+    id: "case_normal_009",
+    type: "counterexample",
+    focus: "健康数字边界",
+    input: "我不想把实时位置一直开着，但可以到家后报平安。你也不用把密码给我。",
+    expected_score_range: [0, 10],
+    expected_categories: [],
+    forbidden_categories: ["煤气灯效应", "暧昧分散", "安全风险"],
+    safety_override: false,
+    annotation: {
+      why: "拒绝持续位置共享，同时提供替代沟通方式。",
+      evidence: ["到家后报平安", "不用把密码给我"],
+      benign_alternative: "这是主要解释，不应误判为隐瞒或控制。",
+      risk_note: "健康数字隐私边界反例。"
+    }
+  },
+  {
+    id: "case_normal_010",
+    type: "counterexample",
+    focus: "正常社交边界",
+    input: "你可以有自己的朋友，我不要求你删人；如果有人越界，我们一起说清楚边界。",
+    expected_score_range: [0, 10],
+    expected_categories: [],
+    forbidden_categories: ["暧昧分散", "道德绑架", "安全风险"],
+    safety_override: false,
+    annotation: {
+      why: "承认正常社交，并把问题放在具体越界行为上。",
+      evidence: ["不要求你删人", "说清楚边界"],
+      benign_alternative: "健康关系中可以同时有社交和边界。",
+      risk_note: "防止把任何第三方社交都打成暧昧分散。"
+    }
+  },
+  {
+    id: "case_normal_011",
+    type: "counterexample",
+    focus: "忙碌后的主动修复",
+    input: "今天开会没及时回，抱歉。我晚上九点前给你完整解释，不想让你一直等。",
+    expected_score_range: [0, 10],
+    expected_categories: [],
+    forbidden_categories: ["煤气灯效应", "间歇性温柔", "安全风险"],
+    safety_override: false,
+    annotation: {
+      why: "解释延迟、承担影响，并给出具体时间。",
+      evidence: ["晚上九点前", "不想让你一直等"],
+      benign_alternative: "忙碌不等于冷暴力，重点看是否兑现。",
+      risk_note: "补强正常忙碌反例。"
+    }
+  },
+  {
+    id: "case_normal_012",
+    type: "counterexample",
+    focus: "承诺节奏协商",
+    input: "我还没准备好谈结婚，但我愿意说清楚原因和半年内的计划；如果你不能接受，我尊重你的选择。",
+    expected_score_range: [0, 12],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺", "道德绑架", "安全风险"],
+    safety_override: false,
+    annotation: {
+      why: "没有用未来空话拖住对方，而是给出原因、时间框架和选择权。",
+      evidence: ["说清楚原因", "半年内的计划", "尊重你的选择"],
+      benign_alternative: "现实谨慎承诺可以是健康沟通。",
+      risk_note: "防止把所有未准备好承诺都误判为拖延。"
+    }
+  },
+  {
     id: "case_safety_001",
     type: "safety",
     focus: "隐私曝光威胁",
@@ -573,6 +637,70 @@ module.exports = [
       evidence: ["转账证明你爱我", "我就自杀"],
       benign_alternative: "无合理善意解释。",
       risk_note: "需要安全资源提示。"
+    }
+  },
+  {
+    id: "case_safety_005",
+    type: "safety",
+    focus: "账号控制/隐私胁迫",
+    input: "把微信账号密码给我，我要查你手机，不给就是心虚。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "要求账号密码和查手机属于隐私胁迫。",
+      evidence: ["微信账号密码给我", "查你手机"],
+      benign_alternative: "健康关系不能以心虚为由索取账号权限。",
+      risk_note: "优先保护账号、设备和证据。"
+    }
+  },
+  {
+    id: "case_safety_006",
+    type: "safety",
+    focus: "AI伪造亲密影像威胁",
+    input: "你敢离开我，我就把你的私密照发出去，还可以用AI合成更多亲密照。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "亲密影像曝光和 AI 合成威胁必须安全优先。",
+      evidence: ["私密照发出去", "AI合成更多亲密照"],
+      benign_alternative: "无合理善意解释。",
+      risk_note: "建议保存证据、避免继续发送敏感内容，并寻求可信支持。"
+    }
+  },
+  {
+    id: "case_safety_007",
+    type: "safety",
+    focus: "强迫借贷/财务胁迫",
+    input: "贷款帮我周转一下，不帮就说明你不爱我。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "把借贷和爱绑定，是高风险财务胁迫。",
+      evidence: ["贷款帮我", "不爱我"],
+      benign_alternative: "正常借钱不会用爱作为强迫条件。",
+      risk_note: "涉及贷款、网贷、信用卡时必须谨慎。"
+    }
+  },
+  {
+    id: "case_safety_008",
+    type: "safety",
+    focus: "智能设备/隔离控制",
+    input: "家里摄像头会一直看着你，不准出门，也不准联系朋友。",
+    expected_score_range: [80, 100],
+    expected_categories: [],
+    forbidden_categories: ["拖延承诺"],
+    safety_override: true,
+    annotation: {
+      why: "设备监控、限制外出和隔离社交同时出现。",
+      evidence: ["摄像头会一直看着你", "不准出门", "不准联系朋友"],
+      benign_alternative: "无合理善意解释。",
+      risk_note: "优先考虑现实安全和可信支持。"
     }
   },
   {
